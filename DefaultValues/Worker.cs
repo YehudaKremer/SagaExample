@@ -1,19 +1,27 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MassTransit.SagaStateMachine;
+using MassTransit;
 using Microsoft.Extensions.Hosting;
-using MassTransit.Visualizer;
 
-namespace PermitService
+namespace DefaultValues
 {
     public class Worker : BackgroundService
     {
+        private readonly IBus bus;
+
+        public Worker(IBus bus)
+        {
+            this.bus = bus;
+        }
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var permitRequestStateMachine = new PermitRequestStateMachine(null);
-            var graph = permitRequestStateMachine.GetGraph();
-            var graphviz = new StateMachineGraphvizGenerator(graph);
-            var file = graphviz.CreateDotFile();
+            await bus.Send(new User
+            {
+                Name = default(string),
+                IsRegistered = default(bool)
+            }, cancellationToken: stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
