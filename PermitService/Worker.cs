@@ -12,8 +12,7 @@ namespace PermitService
         {
             var permitRequestStateMachine = new PermitRequestStateMachine(null);
             var graph = permitRequestStateMachine.GetGraph();
-            var graphviz = new StateMachineGraphvizGenerator(graph);
-            var file = graphviz.CreateDotFile();
+            var file = new StateMachineGraphvizGenerator(graph).CreateDotFile();
 
             while (!stoppingToken.IsCancellationRequested)
             {

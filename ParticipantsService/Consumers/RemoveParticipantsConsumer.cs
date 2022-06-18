@@ -26,7 +26,7 @@ namespace ParticipantsService.Consumers
             _logger.LogInformation("ParticipantsService -> RemoveParticipantsConsumer: publish ParticipantsRemoved event, correlation id: {id}",
                 context.CorrelationId);
 
-            await context.Publish(new ParticipantsRemoved { PermitRequest = context.Message.PermitRequest });
+            await context.Publish(new ParticipantsRemoved(context.Message.CorrelationId));
         }
     }
 }
