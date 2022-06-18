@@ -11,12 +11,12 @@ namespace FrontApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ParticipantsController : ControllerBase
+    public class PermitRequestController : ControllerBase
     {
         readonly IBus _bus;
-        readonly ILogger<ParticipantsController> _logger;
+        readonly ILogger<PermitRequestController> _logger;
 
-        public ParticipantsController(IBus bus, ILogger<ParticipantsController> logger)
+        public PermitRequestController(IBus bus, ILogger<PermitRequestController> logger)
         {
             _bus = bus;
             _logger = logger;
@@ -25,7 +25,7 @@ namespace FrontApi.Controllers
         [HttpPost]
         public async Task Post(PermitRequest permitRequest, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"FrontApi -> ParticipantsController: send " +
+            _logger.LogInformation("FrontApi -> ParticipantsController: send " +
                 $"{(permitRequest.Documents.All(i => i.IsValidDocument) ? "valid" : "invalid")}-CreatePermitRequest command " +
                 "with the participants: {participantsNames}" +
                 "and the documents: {documentsNames}",
@@ -34,7 +34,7 @@ namespace FrontApi.Controllers
 
             permitRequest.PermitRequestId = NewId.NextGuid();
 
-            await _bus.Publish(new CreatePermitRequest { PermitRequest = permitRequest }, cancellationToken);
+            await _bus.Publish(new CreatePermitRequest(permitRequest), cancellationToken);
         }
     }
 }

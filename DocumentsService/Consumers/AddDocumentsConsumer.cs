@@ -21,19 +21,19 @@ namespace DocumentsService.Consumers
             _logger.LogInformation("DocumentsService -> AddDocumentsConsumer: Got AddDocuments command, correlation id: {id}",
                 context.CorrelationId);
 
-            if (context.Message.PermitRequest.Documents.All(i => i.IsValidDocument))
+            if (context.Message.Documents.All(i => i.IsValidDocument))
             {
                 _logger.LogInformation("DocumentsService -> AddDocumentsConsumer: publish DocumentAdded event, correlation id: {id}",
                     context.CorrelationId);
 
-                await context.Publish(new DocumentsAdded { PermitRequest = context.Message.PermitRequest });
+                await context.Publish(new DocumentsAdded(context.Message.CorrelationId));
             }
             else
             {
                 _logger.LogInformation("DocumentsService -> AddDocumentsConsumer: Found INVALID Document so publish DocumentRejected event, correlation id: {id}",
                     context.CorrelationId);
 
-                await context.Publish(new DocumentRejected { PermitRequest = context.Message.PermitRequest });
+                await context.Publish(new DocumentRejected(context.Message.CorrelationId));
             }
         }
     }

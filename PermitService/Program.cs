@@ -32,14 +32,7 @@ namespace PermitService
                         EndpointConvention.Map<RemoveParticipants>(new Uri($"queue:{nameof(RemoveParticipants)}"));
                         EndpointConvention.Map<AddDocuments>(new Uri($"queue:{nameof(AddDocuments)}"));
 
-                        GlobalTopology.Send.UseCorrelationId<AddDocuments>(i => i.PermitRequest.PermitRequestId);
-                        GlobalTopology.Send.UseCorrelationId<AddParticipants>(i => i.PermitRequest.PermitRequestId);
                         GlobalTopology.Send.UseCorrelationId<CreatePermitRequest>(i => i.PermitRequest.PermitRequestId);
-                        GlobalTopology.Send.UseCorrelationId<RemoveParticipants>(i => i.PermitRequest.PermitRequestId);
-                        GlobalTopology.Send.UseCorrelationId<DocumentsAdded>(i => i.PermitRequest.PermitRequestId);
-                        GlobalTopology.Send.UseCorrelationId<DocumentRejected>(i => i.PermitRequest.PermitRequestId);
-                        GlobalTopology.Send.UseCorrelationId<ParticipantsAdded>(i => i.PermitRequest.PermitRequestId);
-                        GlobalTopology.Send.UseCorrelationId<ParticipantsRemoved>(i => i.PermitRequest.PermitRequestId);
 
                         config.AddSagaStateMachine<PermitRequestStateMachine, PermitRequestState>()
                             .InMemoryRepository();

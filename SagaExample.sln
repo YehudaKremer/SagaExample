@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entiti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermitService", "PermitService\PermitService.csproj", "{AA8C7602-7BF1-4AE0-9BB5-2907BDC7E1AF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2FF6C489-9FA7-4A10-9372-43E326E3F487}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		saga-graph.png = saga-graph.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

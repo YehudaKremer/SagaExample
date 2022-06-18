@@ -26,7 +26,7 @@ namespace ParticipantsService.Consumers
             _logger.LogInformation("ParticipantsService -> AddParticipantConsumer: publish ParticipantsAdded event, correlation id: {id}",
                 context.CorrelationId);
 
-            await context.Publish(new ParticipantsAdded { PermitRequest = context.Message.PermitRequest });
+            await context.Publish(new ParticipantsAdded(context.Message.CorrelationId, context.Message.Participants));
         }
     }
 }
