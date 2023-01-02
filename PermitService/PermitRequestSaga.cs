@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using MassTransit;
-using Dapper.Contrib.Extensions;
+﻿using Dapper.Contrib.Extensions;
 using Entities.Commands;
 using Entities.Events;
 using Entities.Models;
+using MassTransit;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace PermitService
 {
@@ -62,6 +62,13 @@ namespace PermitService
                     .Then(context => logger.LogInformation("PermitService -> PermitRequestStateMachine: Saga finish with rollback, correlation id: {id}",
                         context.CorrelationId))
                 .Finalize());
+
+            DuringAny(
+                When(CreatePermitRequest).Then(c => c.Saga.Documents ??= c.Message.PermitRequest.Documents),
+                When(ParticipantsAdded).Then(c => c.Saga.SavedParticipants ??= c.Message.Participants),
+                When(DocumentsAdded),
+                When(DocumentRejected),
+                When(ParticipantsRemoved));
 
             SetCompletedWhenFinalized();
         }
